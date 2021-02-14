@@ -1,5 +1,6 @@
 from colorama import init
 from paddle import Paddle
+from brick import Brick, RedB, BlueB, GreenB, TransparentB
 import os
 
 # this class lays out the screen where the game will run
@@ -16,6 +17,16 @@ class Screen():
             pixels[i][0] = '|'
             pixels[i][screenWidth + 1] = '|'
         self.pixels = pixels
+
+        # tracking the bricks
+        self.bricks = ([[] for i in range(self.maxHeight + 2)])
+        # print(len(self.bricks[0]))
+        for i in range(self.maxHeight + 2):
+            for j in range(self.maxWidth + 2):
+                temp = TransparentB()
+                self.bricks[i].append(temp)
+        
+        
 
 
     def display(self):

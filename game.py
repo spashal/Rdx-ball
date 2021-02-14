@@ -2,21 +2,28 @@ from colorama import init, Fore, Back, Style
 from screen import Screen
 from paddle import Paddle
 from kbhit import KBHit
+from brick import Brick, RedB, GreenB, TransparentB, BlueB
 from ball import Ball
 import os, numpy, sys, time, signal
 
-screen = Screen(50, 30)
-paddle = Paddle(9, screen)
+screen = Screen(10, 10)
+paddle = Paddle(5, screen)
 ball = Ball(screen, paddle)
 paddle.place()
 ball.move()
 screen.display()
 
-def alarmHandler(signum, frame):
-	raise AlarmException
+rb = RedB(3, screen)
+gb = GreenB(3, screen)
+bb = BlueB(3, screen)
+rb.place(1, 2)
+gb.place(4, 2)
+bb.place(7, 2)
+for i in range(3):
+	screen.bricks[2][i + 1] = rb
+	screen.bricks[2][i + 4] = gb
+	screen.bricks[2][i + 7] = bb
 
-class AlarmException(Exception):
-	pass
 
 keyboard = KBHit()
 
