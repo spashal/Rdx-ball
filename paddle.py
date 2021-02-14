@@ -7,13 +7,13 @@ class Paddle():
         self.size = size
         self.screenHeight = screen.maxHeight
         self.screenWidth = screen.maxWidth
-        self.paddleX = int((self.screenWidth - size) / 2)
+        self.paddleX = int((self.screenWidth - size + 1) / 2)
         self.screen = screen
 
     def place(self):
         for i in range(1, self.screenWidth + 1):
             if i >= self.paddleX and i < self.paddleX + self.size:
-                self.screen.pixels[self.screenHeight][i] = '@'
+                self.screen.pixels[self.screenHeight][i] = '*'
             else:
                 self.screen.pixels[self.screenHeight][i] = ' '
     
