@@ -33,9 +33,11 @@ class Screen():
         for i in range(self.maxHeight + 2):
             for j in range(self.maxWidth + 2):
                 if self.pixels[i][j] == '|':
-                    print(Back.BLUE, self.pixels[i][j], end = '')
+                    print(Back.BLUE, " ", end = '')
                 elif self.pixels[i][j] == '=':
                     print(Back.BLUE, ' ', end = '')
+                elif self.pixels[i][j] == '4':
+                    print(Back.CYAN, ' ', end='')
                 elif self.pixels[i][j] == '3':
                     print(Back.MAGENTA, ' ', end = '')
                 elif self.pixels[i][j] == '2':

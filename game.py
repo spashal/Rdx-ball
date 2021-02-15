@@ -2,7 +2,7 @@ from colorama import init, Fore, Back, Style
 from screen import Screen
 from paddle import Paddle
 from kbhit import KBHit
-from brick import Brick, RedB, GreenB, TransparentB, BlueB
+from brick import Brick, RedB, GreenB, TransparentB, BlueB, UnbreakableB
 from ball import Ball
 import os, numpy, sys, time
 
@@ -13,7 +13,7 @@ ball = Ball(screen, paddle)
 paddle.place()
 ball.move()
 
-rb = RedB(3, screen)
+rb = UnbreakableB(3, screen)
 gb = GreenB(3, screen)
 bb = BlueB(3, screen)
 rb.place(1, 2)

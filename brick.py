@@ -57,7 +57,6 @@ class BlueB(Brick):
         self.x = x
         self.y = y
         for i in range(x, x + self.size):
-            print(y, i)
             self.screen.pixels[y][i] = '3'
     
     def weaken(self):
@@ -66,3 +65,17 @@ class BlueB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
+
+class UnbreakableB(Brick):
+    def __init__(self, size, screen):
+        super().__init__(size, screen, 4)
+    
+    def place(self, x, y):
+        self.x = x
+        self.y = y
+        for i in range(x, x + self.size):
+            self.screen.pixels[y][i] = '4'
+    
+    # a function that is there as a dummy
+    def weaken(self):
+        pass
