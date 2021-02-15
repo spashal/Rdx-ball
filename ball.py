@@ -16,14 +16,40 @@ class Ball():
         self.launched = False
     
     def brickollision(self):
-        if self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
+        if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
+            temp = self.y
             self.y = self.prevY
+            self.prevY = temp
             self.yVel *= -1
+            return True
+        elif self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
+            self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
+            temp = self.y
+            self.y = self.prevY
+            self.prevY = temp
+            self.yVel *= -1
+            return True
+        elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
+            self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
+            temp = self.x
+            self.x = self.prevX
+            self.prevX = temp
+            self.xVel *= -1
+            return True
+        elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
+            self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
+            temp = self.x
+            self.x = self.prevX
+            self.prevX = temp
+            self.xVel *= -1
             return True
         return False    
 
     def move(self):
+        if self.brickollision() == True:
+            self.place()
+            return
         self.prevX = self.x
         self.prevY = self.y
         if self.launched == False:
@@ -32,8 +58,6 @@ class Ball():
             print("1")
             self.x += self.waitTime * self.xVel
             self.y += self.waitTime * self.yVel
-            if self.brickollision() == True:
-                return
             if self.x < 1 or self.x > self.screen.maxWidth + 1:
                 self.x = self.prevX
                 self.xVel *= -1
@@ -55,5 +79,5 @@ class Ball():
 
     def launch(self):
         self.launched = True
-        self.xVel = (self.x - (self.paddle.paddleX + self.paddle.size) / 2) * 6
+        self.xVel = (self.x - (self.paddle.paddleX + self.paddle.size) / 2) * 2
         self.yVel = -2

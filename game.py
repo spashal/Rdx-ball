@@ -16,13 +16,11 @@ screen.display()
 rb = RedB(3, screen)
 gb = GreenB(3, screen)
 bb = BlueB(3, screen)
-rb.place(1, 2)
-gb.place(4, 2)
-bb.place(7, 2)
+# rb.place(1, 2)
+# gb.place(4, 2)
+bb.place(4, 4)
 for i in range(3):
-	screen.bricks[2][i + 1] = rb
-	screen.bricks[2][i + 4] = gb
-	screen.bricks[2][i + 7] = bb
+	screen.bricks[4][i + 4] = bb
 
 
 keyboard = KBHit()

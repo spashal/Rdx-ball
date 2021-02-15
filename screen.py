@@ -19,10 +19,10 @@ class Screen():
         self.pixels = pixels
 
         # tracking the bricks
-        self.bricks = ([[] for i in range(self.maxHeight + 2)])
+        self.bricks = ([[] for i in range(self.maxHeight + 4)])
         # print(len(self.bricks[0]))
-        for i in range(self.maxHeight + 2):
-            for j in range(self.maxWidth + 2):
+        for i in range(self.maxHeight + 4):
+            for j in range(self.maxWidth + 4):
                 temp = TransparentB()
                 self.bricks[i].append(temp)
         

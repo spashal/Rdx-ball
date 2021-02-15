@@ -28,6 +28,8 @@ class RedB(Brick):
     def weaken(self):
         self.strength -= 1
         self.son = TransparentB()
+        for i in range(self.size):
+            self.screen.bricks[self.y][self.x + i] = self.son
         self.removeSelf()
 
 class GreenB(Brick):
@@ -43,6 +45,8 @@ class GreenB(Brick):
     def weaken(self):
         self.strength -= 1
         self.son = RedB(self.size, self.screen)
+        for i in range(self.size):
+            self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
 
 class BlueB(Brick):
@@ -58,4 +62,6 @@ class BlueB(Brick):
     def weaken(self):
         self.strength -= 1
         self.son = GreenB(self.size, self.screen)
+        for i in range(self.size):
+            self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
