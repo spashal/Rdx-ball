@@ -1,8 +1,8 @@
-from colorama import init
+from colorama import init, Fore, Back, Style
 from paddle import Paddle
 from brick import Brick, RedB, BlueB, GreenB, TransparentB
 import os
-
+init()
 # this class lays out the screen where the game will run
 class Screen():
     def __init__(self, screenWidth, screenHeight):
@@ -31,6 +31,22 @@ class Screen():
 
     def display(self):
         for i in range(self.maxHeight + 2):
-            listToString = ' '.join([str(elem) for elem in self.pixels[i]])
-            print(listToString)
+            for j in range(self.maxWidth + 2):
+                if self.pixels[i][j] == '|':
+                    print(Back.BLUE, self.pixels[i][j], end = '')
+                elif self.pixels[i][j] == '=':
+                    print(Back.BLUE, ' ', end = '')
+                elif self.pixels[i][j] == '3':
+                    print(Back.MAGENTA, ' ', end = '')
+                elif self.pixels[i][j] == '2':
+                    print(Back.GREEN, ' ', end = '')
+                elif self.pixels[i][j] == '1':
+                    print(Back.RED, ' ', end = '')    
+                elif self.pixels[i][j] == ' ':
+                    print(Back.RESET, self.pixels[i][j], end = '')
+                elif self.pixels[i][j] == '*':
+                    print(Back.YELLOW, " ", end = '')
+                else:
+                    print(Back.RESET, self.pixels[i][j], end = '')
+            print(Back.RESET)
     

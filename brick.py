@@ -57,6 +57,7 @@ class BlueB(Brick):
         self.x = x
         self.y = y
         for i in range(x, x + self.size):
+            print(y, i)
             self.screen.pixels[y][i] = '3'
     
     def weaken(self):
