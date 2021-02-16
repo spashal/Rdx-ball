@@ -1,12 +1,13 @@
 import os
-from powerup import powerUps, ExpandPU, ShrinkPU
+from powerup import powerUps, ExpandPU, ShrinkPU, FastPU
 
 class Brick():
-    def __init__(self, size, screen, strength, paddle):
+    def __init__(self, size, screen, strength, paddle, ball):
         self.paddle = paddle
         self.screen = screen
         self.size = size
         self.strength = strength
+        self.ball = ball
 
 class  TransparentB(Brick):
     def __init__(self):
@@ -14,8 +15,8 @@ class  TransparentB(Brick):
         self.strength = 0
     
 class RedB(Brick):
-    def __init__(self, size, screen, paddle):
-        super().__init__(size, screen, 1, paddle)
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 1, paddle, ball)
     
     def place(self, x, y):
         self.x = x
@@ -33,13 +34,13 @@ class RedB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.removeSelf()
-        self.giftE = ShrinkPU(self.screen, self.paddle, self.x+1, self.y)
+        self.giftE = FastPU(self.screen, self.paddle, self.x+1, self.y, self.ball)
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)
 
 class GreenB(Brick):
-    def __init__(self, size, screen, paddle):
-        super().__init__(size, screen, 2, paddle)
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 2, paddle, ball)
 
     def place(self, x, y):
         self.x = x
@@ -49,14 +50,14 @@ class GreenB(Brick):
     
     def weaken(self):
         self.strength -= 1
-        self.son = RedB(self.size, self.screen, self.paddle)
+        self.son = RedB(self.size, self.screen, self.paddle, self.ball)
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
 
 class BlueB(Brick):
-    def __init__(self, size, screen, paddle):
-        super().__init__(size, screen, 3, paddle)
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 3, paddle, ball)
 
     def place(self, x, y):
         self.x = x
@@ -66,14 +67,14 @@ class BlueB(Brick):
     
     def weaken(self):
         self.strength -= 1
-        self.son = GreenB(self.size, self.screen, self.paddle)
+        self.son = GreenB(self.size, self.screen, self.paddle, self.ball)
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
 
 class UnbreakableB(Brick):
-    def __init__(self, size, screen, paddle):
-        super().__init__(size, screen, 4, paddle)
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 4, paddle, ball)
     
     def place(self, x, y):
         self.x = x

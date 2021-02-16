@@ -85,3 +85,42 @@ class ShrinkPU(powerUps):
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
+
+
+class FastPU(powerUps):
+    def __init__(self, screen, paddle, parentX, parentY, ball):
+        super().__init__(screen, paddle, parentX, parentY)
+        self.ball = ball
+    
+    def place(self, x, y):
+        if self.life == False:
+            return
+        self.prevPixel = self.screen.pixels[y][x]
+        self.screen.pixels[y][x] = 'F'
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+    
+    def collide(self):
+        if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
+            #do something to inform the paddle
+            if self.ball.isFast == False:
+                self.ball.fast()
+                self.life = False
+                self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
+            else:
+                self.life = False
+                self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
+            return True
+        if self.y > self.screen.maxHeight:
+            self.life = False
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
+            return True
+        return False
+
+    def move(self):
+        if self.life == False:
+            return
+        self.prevY = self.y
+        self.y += self.screen.interval * self.vel
+        if self.collide() == True:
+            return
+        self.place(int(self.x), int(self.y))

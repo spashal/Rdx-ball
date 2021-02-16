@@ -14,6 +14,7 @@ class Ball():
         self.prevX = self.x
         self.prevY = self.y
         self.launched = False
+        self.isFast = False
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
@@ -51,6 +52,12 @@ class Ball():
         return False    
 
     def move(self):
+
+        if self.isFast == True and self.fastTime + 10 < self.screen.time:
+            self.isFast = False
+            self.xVel = self.originalVelX
+            self.yVel = self.originalVelY
+
         if self.brickollision() == True:
             self.place()
             return
@@ -88,3 +95,12 @@ class Ball():
         self.launched = True
         self.xVel = random.randint(-5, 5)
         self.yVel = -4
+        self.originalVelX = self.xVel
+        self.originalVelY = self.yVel
+
+    def fast(self):
+        self.isFast = True
+        self.xVel *= 1.5
+        self.yVel *= 1.5
+        self.fastTime = self.screen.time
+        self.move()

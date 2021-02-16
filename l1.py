@@ -13,9 +13,9 @@ class Level1():
         self.paddle.place(self.paddle.size)
         self.ball.move()
 
-        self.rb = UnbreakableB(3, self.screen, self.paddle)
-        self.gb = GreenB(3, self.screen, self.paddle)
-        self.bb = RedB(3, self.screen, self.paddle)
+        self.rb = UnbreakableB(3, self.screen, self.paddle, self.ball)
+        self.gb = GreenB(3, self.screen, self.paddle, self.ball)
+        self.bb = RedB(3, self.screen, self.paddle, self.ball)
         self.rb.place(1, 2)
         self.gb.place(4, 2)
         self.bb.place(7, 2)
