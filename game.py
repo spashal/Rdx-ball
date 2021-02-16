@@ -29,7 +29,7 @@ keyboard = KBHit()
 
 while True:
 	# os.system("clear")
-
+	screen.time += ball.waitTime
 	time.sleep(ball.waitTime)
 	if keyboard.kbhit():
 		inp = keyboard.getch()

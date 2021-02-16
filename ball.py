@@ -17,6 +17,7 @@ class Ball():
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
             temp = self.y
             self.y = self.prevY
@@ -24,6 +25,7 @@ class Ball():
             self.yVel *= -1
             return True
         elif self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
             temp = self.y
             self.y = self.prevY
@@ -31,6 +33,7 @@ class Ball():
             self.yVel *= -1
             return True
         elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
             temp = self.x
             self.x = self.prevX
@@ -38,6 +41,7 @@ class Ball():
             self.xVel *= -1
             return True
         elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
             temp = self.x
             self.x = self.prevX
@@ -61,13 +65,16 @@ class Ball():
             if self.x < 1 or self.x > self.screen.maxWidth + 1:
                 self.x = self.prevX
                 self.xVel *= -1
-            elif self.y > self.screen.maxHeight:
-                if self.paddle.paddleX > self.x or self.paddle.paddleX + self.paddle.size < self.x:
-                    self.gameOver = True
-                    return
-                else:
+            elif self.y >= self.screen.maxHeight:
+                if self.paddle.paddleX <= self.x and self.paddle.paddleX + self.paddle.size > self.x:
                     self.y = self.prevY
                     self.yVel *= -1
+                elif self.y >= (self.screen.maxHeight + 1):
+                    self.gameOver = True
+                    os.system("clear")
+                    self.screen.display()
+                    print("Game Over!!")
+                    sys.exit()
             elif self.y < 1:
                 self.y = self.prevY
                 self.yVel *= -1

@@ -8,6 +8,8 @@ class Screen():
     def __init__(self, screenWidth, screenHeight):
         self.maxWidth = screenWidth
         self.maxHeight = screenHeight
+        self.score = 0
+        self.time = 0
 
         # making borders
         pixels = [[' ' for j in range(screenWidth + 2)] for i in range(screenHeight + 2)]
@@ -51,4 +53,5 @@ class Screen():
                 else:
                     print(Back.RESET, self.pixels[i][j], end = '')
             print(Back.RESET)
+        print("Score:", self.score, "  ", "Time elapsed:", int(self.time))
     
