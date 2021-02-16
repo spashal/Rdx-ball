@@ -73,8 +73,7 @@ class Ball():
                     self.gameOver = True
                     os.system("clear")
                     self.screen.display()
-                    print("Game Over!!")
-                    sys.exit()
+                    return
             elif self.y < 1:
                 self.y = self.prevY
                 self.yVel *= -1
