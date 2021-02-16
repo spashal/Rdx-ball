@@ -55,10 +55,10 @@ class Screen():
                     print(Back.RESET, self.pixels[i][j], end = '')
                 elif self.pixels[i][j] == '*':
                     print(Back.YELLOW, " ", end = '')
-                elif self.pixels[i][j] == 'E':
-                    print(Back.LIGHTBLACK_EX, " ", end='')
+                elif self.pixels[i][j] == "@":
+                    print(Back.RESET, "@", end='')
                 else:
-                    print(Back.RESET, self.pixels[i][j], end = '')
+                    print(Back.LIGHTBLACK_EX, self.pixels[i][j], end = '')
             print(Back.RESET)
         print("Score:", self.score, "  ", "Time elapsed:", int(self.time))
     

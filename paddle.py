@@ -12,6 +12,8 @@ class Paddle():
         self.isExpanded = False
         self.originalSize = size
         self.expandedTime = 0.00
+        self.shrunkTime = 0
+        self.isShrunk = False
 
     def place(self, size):
         for i in range(1, self.screenWidth + 1):
@@ -26,6 +28,11 @@ class Paddle():
                 self.expandedTime = 0
                 self.size = self.originalSize
                 self.isExpanded = False
+        
+        if self.isShrunk == True and self.shrunkTime + 100 < self.screen.time:
+            self.shrunkTime = 0
+            self.size = self.originalSize
+            self.isShrunk = False
             
         if input == 'a' and self.paddleX > 1:
             self.paddleX -= 1
@@ -38,7 +45,12 @@ class Paddle():
         self.size = int(self.size * 1.5)
         self.expandedTime = self.screen.time
         self.move('c')
-
+    
+    def shrink(self):
+        self.isShrunk = True
+        self.size = int(self.size * 0.66)
+        self.shrunkTime = self.screen.time
+        self.move('c')
 
     
     # below function shall place the paddle into the appropriate string in pixels
