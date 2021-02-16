@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 # paddle is the stick like structure at the bottom you hit your ball with
 class Paddle():
@@ -9,20 +9,37 @@ class Paddle():
         self.screenWidth = screen.maxWidth
         self.paddleX = int((self.screenWidth - size + 1) / 2)
         self.screen = screen
+        self.isExpanded = False
+        self.originalSize = size
+        self.expandedTime = 0.00
 
-    def place(self):
+    def place(self, size):
         for i in range(1, self.screenWidth + 1):
-            if i >= self.paddleX and i < self.paddleX + self.size:
+            if i >= self.paddleX and i < self.paddleX + size:
                 self.screen.pixels[self.screenHeight][i] = '*'
             else:
                 self.screen.pixels[self.screenHeight][i] = ' '
     
     def move(self, input):
+        if self.isExpanded == True:
+            if self.expandedTime + 100 < self.screen.time:
+                self.expandedTime = 0
+                self.size = self.originalSize
+                self.isExpanded = False
+            
         if input == 'a' and self.paddleX > 1:
             self.paddleX -= 1
         elif input == 'd' and self.paddleX + self.size <= self.screenWidth:
             self.paddleX += 1
-        self.place()
+        self.place(self.size)
+
+    def expand(self):
+        self.isExpanded = True
+        self.size = int(self.size * 1.5)
+        self.expandedTime = self.screen.time
+        self.move('c')
+
+
     
     # below function shall place the paddle into the appropriate string in pixels
         

@@ -62,7 +62,7 @@ class Ball():
             print("1")
             self.x += self.waitTime * self.xVel
             self.y += self.waitTime * self.yVel
-            if self.x < 1 or self.x > self.screen.maxWidth + 1:
+            if self.x < 1 or self.x > self.screen.maxWidth + 1 and self.y < self.screen.maxHeight:
                 self.x = self.prevX
                 self.xVel *= -1
             elif self.y >= self.screen.maxHeight:

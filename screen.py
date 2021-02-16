@@ -9,7 +9,10 @@ class Screen():
         self.maxWidth = screenWidth
         self.maxHeight = screenHeight
         self.score = 0
-        self.time = 0
+        self.time = 0.00
+        self.powerUps = []
+        # remember to change this with change in interval in ball.py
+        self.interval = 0.05
 
         # making borders
         pixels = [[' ' for j in range(screenWidth + 2)] for i in range(screenHeight + 2)]
@@ -32,6 +35,8 @@ class Screen():
 
 
     def display(self):
+        for i in range(len(self.powerUps)):
+            self.powerUps[i].move()
         for i in range(self.maxHeight + 2):
             for j in range(self.maxWidth + 2):
                 if self.pixels[i][j] == '|':
@@ -50,6 +55,8 @@ class Screen():
                     print(Back.RESET, self.pixels[i][j], end = '')
                 elif self.pixels[i][j] == '*':
                     print(Back.YELLOW, " ", end = '')
+                elif self.pixels[i][j] == 'E':
+                    print(Back.LIGHTBLACK_EX, " ", end='')
                 else:
                     print(Back.RESET, self.pixels[i][j], end = '')
             print(Back.RESET)
