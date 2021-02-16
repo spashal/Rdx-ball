@@ -29,7 +29,7 @@ while lives > 0:
 			break
 		os.system("clear")
 		level.screen.display()
-		print("Lives left:", lives - 1, " Paddle size:", level.paddle.isExpanded)
+		print("Lives left:", lives - 1)
 	lives -= 1
 
 print("Game over!")

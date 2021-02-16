@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, random
 
 gameOver = False
 class Ball():
@@ -59,7 +59,6 @@ class Ball():
         if self.launched == False:
             self.x = self.paddle.paddleX + (self.paddle.size) / 2
         else:
-            print("1")
             self.x += self.waitTime * self.xVel
             self.y += self.waitTime * self.yVel
             if self.x < 1 or self.x > self.screen.maxWidth + 1 and self.y < self.screen.maxHeight:
@@ -68,6 +67,8 @@ class Ball():
             elif self.y >= self.screen.maxHeight:
                 if self.paddle.paddleX <= self.x and self.paddle.paddleX + self.paddle.size > self.x:
                     self.y = self.prevY
+                    self.xVel += (self.paddle.paddleX + int(self.paddle.size/2)) - self.x
+                    # self.xVel *= -1
                     self.yVel *= -1
                 elif self.y >= (self.screen.maxHeight + 1):
                     self.gameOver = True
@@ -85,5 +86,5 @@ class Ball():
 
     def launch(self):
         self.launched = True
-        self.xVel = (self.x - (self.paddle.paddleX + self.paddle.size) / 2) * 2
-        self.yVel = -2
+        self.xVel = random.randint(-5, 5)
+        self.yVel = -4

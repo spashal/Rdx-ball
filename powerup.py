@@ -35,6 +35,9 @@ class ExpandPU(powerUps):
                 self.life = False
                 self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
             return True
+        elif self.y > self.screen.maxHeight:
+            self.life = False
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
         return False
 
     def move(self):
@@ -67,6 +70,10 @@ class ShrinkPU(powerUps):
             else:
                 self.life = False
                 self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
+            return True
+        if self.y > self.screen.maxHeight:
+            self.life = False
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
             return True
         return False
 

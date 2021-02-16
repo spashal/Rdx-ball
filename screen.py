@@ -55,6 +55,8 @@ class Screen():
                     print(Back.RESET, self.pixels[i][j], end = '')
                 elif self.pixels[i][j] == '*':
                     print(Back.YELLOW, " ", end = '')
+                elif self.pixels[i][j] == '&':
+                    print(Back.LIGHTYELLOW_EX, " ", end='')
                 elif self.pixels[i][j] == "@":
                     print(Back.RESET, "@", end='')
                 else:

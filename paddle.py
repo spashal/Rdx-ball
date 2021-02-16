@@ -18,7 +18,10 @@ class Paddle():
     def place(self, size):
         for i in range(1, self.screenWidth + 1):
             if i >= self.paddleX and i < self.paddleX + size:
-                self.screen.pixels[self.screenHeight][i] = '*'
+                if i != self.paddleX + int(self.size/2):
+                    self.screen.pixels[self.screenHeight][i] = '*'
+                else:
+                    self.screen.pixels[self.screenHeight][i] = '&'
             else:
                 self.screen.pixels[self.screenHeight][i] = ' '
     
