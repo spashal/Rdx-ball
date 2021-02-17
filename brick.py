@@ -103,7 +103,33 @@ class BomberB(Brick):
                 for j in range(3):
                     if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
                         if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength != 4:
+                            self.screen.score += self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength
                             self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength = 0
         
+    def weaken(self):
+        self.blast()
+
+class ChainReactionB(Brick):
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 6, paddle, ball)
+    
+    def place(self, x, y):
+        self.x = x
+        self.y = y
+        for i in range(self.size):
+            self.screen.pixels[self.y][self.x + i] = '6'
+    
+
+    def blast(self):
+        # note that while having a chain reaction, the score is increased by (n + 1)*strength and this is treated as a bonus(the extra 1*strength score)
+        self.screen.score += self.strength
+        self.strength = 0
+        for k in range(self.size):
+           for i in range(3):
+                for j in range(3):
+                    if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
+                        if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength == 6:
+                            self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].blast()
+    
     def weaken(self):
         self.blast()
