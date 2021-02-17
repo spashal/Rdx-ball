@@ -44,14 +44,6 @@ class Screen():
                     print(Back.BLUE, " ", end = '')
                 elif self.pixels[i][j] == '=':
                     print(Back.BLUE, ' ', end = '')
-                elif self.pixels[i][j] == '4':
-                    print(Back.CYAN, ' ', end='')
-                elif self.pixels[i][j] == '3':
-                    print(Back.MAGENTA, ' ', end = '')
-                elif self.pixels[i][j] == '2':
-                    print(Back.GREEN, ' ', end = '')
-                elif self.pixels[i][j] == '1':
-                    print(Back.RED, ' ', end = '')    
                 elif self.pixels[i][j] == ' ':
                     print(Back.RESET, self.pixels[i][j], end = '')
                 elif self.pixels[i][j] == '*':
@@ -60,6 +52,19 @@ class Screen():
                     print(Back.LIGHTYELLOW_EX, " ", end='')
                 elif self.pixels[i][j] == "@":
                     print(Back.RESET, "@", end='')
+                elif self.bricks[i][j].strength == 0:
+                    print(Back.RESET, ' ', end='')
+                elif self.pixels[i][j] == '5':
+                    print(Back.LIGHTGREEN_EX, ' ', end='')
+                elif self.pixels[i][j] == '4':
+                    print(Back.CYAN, ' ', end='')
+                elif self.pixels[i][j] == '3':
+                    print(Back.MAGENTA, ' ', end = '')
+                elif self.pixels[i][j] == '2':
+                    print(Back.GREEN, ' ', end = '')
+                elif self.pixels[i][j] == '1':
+                    print(Back.RED, ' ', end = '')    
+
                 else:
                     print(Back.LIGHTBLACK_EX, self.pixels[i][j], end = '')
             print(Back.RESET)

@@ -8,6 +8,7 @@ class Brick():
         self.size = size
         self.strength = strength
         self.ball = ball
+        self.ar = [-1, 0, 1]
 
 class  TransparentB(Brick):
     def __init__(self):
@@ -85,3 +86,24 @@ class UnbreakableB(Brick):
     # a function that is there as a dummy
     def weaken(self):
         pass
+
+class BomberB(Brick):
+    def __init__(self, size, screen, paddle, ball):
+        super().__init__(size, screen, 5, paddle, ball)
+    
+    def place(self, x, y):
+        self.x = x
+        self.y = y
+        for i in range(self.size):
+            self.screen.pixels[self.y][self.x + i] = '5'
+    
+    def blast(self):
+        for k in range(self.size):
+           for i in range(3):
+                for j in range(3):
+                    if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
+                        if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength != 4:
+                            self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength = 0
+        
+    def weaken(self):
+        self.blast()
