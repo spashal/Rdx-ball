@@ -21,33 +21,33 @@ class Ball():
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
-            temp = self.y
-            self.y = self.prevY
-            self.prevY = temp
+            # temp = self.y
+            # self.y = self.prevY
+            # self.prevY = temp
             self.yVel *= -1
             return True
-        elif int(self.y) < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
-            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
+        elif self.y < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
-            temp = self.y
-            self.y = self.prevY
-            self.prevY = temp
+            # temp = self.y
+            # self.y = self.prevY
+            # self.prevY = temp
             self.yVel *= -1
             return True
         elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
-            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
+            self.screen.score += self.screen.bricks[int(self.y)][int(self.x + 1)].strength
             self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
-            temp = self.x
-            self.x = self.prevX
-            self.prevX = temp
+            # temp = self.x
+            # self.x = self.prevX
+            # self.prevX = temp
             self.xVel *= -1
             return True
         elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
-            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
+            self.screen.score += self.screen.bricks[int(self.y)][int(self.x-1)].strength
             self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
-            temp = self.x
-            self.x = self.prevX
-            self.prevX = temp
+            # temp = self.x
+            # self.x = self.prevX
+            # self.prevX = temp
             self.xVel *= -1
             return True
         return False    
@@ -85,7 +85,6 @@ class Ball():
                         return
                     self.y = self.prevY
                     self.xVel += (self.paddle.paddleX + int(self.paddle.size/2)) - self.x
-                    # self.xVel *= -1
                     self.yVel *= -1
                 elif self.y >= (self.screen.maxHeight + 1):
                     if self.screen.balls > 1:

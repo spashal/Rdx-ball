@@ -121,14 +121,13 @@ class ChainReactionB(Brick):
     
 
     def blast(self):
-        # note that while having a chain reaction, the score is increased by (n + 1)*strength and this is treated as a bonus(the extra 1*strength score)
-        self.screen.score += self.strength
         self.strength = 0
         for k in range(self.size):
            for i in range(3):
                 for j in range(3):
                     if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
                         if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength == 6:
+                            self.screen.score += self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength
                             self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].blast()
     
     def weaken(self):
