@@ -2,7 +2,7 @@ import os, sys, random
 
 gameOver = False
 class Ball():
-    def __init__(self, screen, paddle):
+    def __init__(self, screen, paddle, fake):
         self.screen = screen
         self.waitTime = 0.05
         self.gameOver = False
@@ -15,6 +15,7 @@ class Ball():
         self.prevY = self.y
         self.launched = False
         self.isFast = False
+        self.alive = True
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
@@ -25,7 +26,7 @@ class Ball():
             self.prevY = temp
             self.yVel *= -1
             return True
-        elif self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
+        elif int(self.y) < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
             temp = self.y
@@ -52,7 +53,8 @@ class Ball():
         return False    
 
     def move(self):
-
+        if self.alive == False:
+            return
         if self.isFast == True and self.fastTime + 10 < self.screen.time:
             self.isFast = False
             self.xVel = self.originalVelX
@@ -86,6 +88,9 @@ class Ball():
                     # self.xVel *= -1
                     self.yVel *= -1
                 elif self.y >= (self.screen.maxHeight + 1):
+                    if self.screen.balls > 1:
+                        self.alive = False
+                        return
                     self.gameOver = True
                     os.system("clear")
                     self.screen.display()
@@ -100,6 +105,7 @@ class Ball():
         self.screen.pixels[int(self.y)][int(self.x)] = '@'
 
     def launch(self):
+        self.screen.balls += 1
         self.launched = True
         self.xVel = random.randint(-5, 5)
         self.yVel = -4
@@ -111,4 +117,16 @@ class Ball():
         self.xVel *= 1.5
         self.yVel *= 1.5
         self.fastTime = self.screen.time
+        self.move()
+
+    def tempBall(self, x, y):
+        self.screen.balls += 1
+        self.launched = True
+        self.x = x
+        self.y = y
+        self.x = 1
+        self.y = 1
+        while self.x * self.y != 0:
+            self.xVel = random.randint(-3, 3)
+            self.yVel = random.randint(-3, 3)
         self.move()

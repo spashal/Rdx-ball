@@ -11,6 +11,7 @@ class Screen():
         self.score = 0
         self.time = 0.00
         self.powerUps = []
+        self.balls = 0
         # remember to change this with change in interval in ball.py
         self.interval = 0.05
 

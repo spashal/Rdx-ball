@@ -9,7 +9,7 @@ class Level1():
     def __init__(self):
         self.screen = Screen(10, 10)
         self.paddle = Paddle(5, self.screen)
-        self.ball = Ball(self.screen, self.paddle)
+        self.ball = Ball(self.screen, self.paddle, False)
         self.paddle.place(self.paddle.size)
         self.ball.move()
 
