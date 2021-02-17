@@ -13,7 +13,9 @@ class Paddle():
         self.originalSize = size
         self.expandedTime = 0.00
         self.shrunkTime = 0
+        self.grabTime = 0
         self.isShrunk = False
+        self.isGrabbing = False
 
     def place(self, size):
         for i in range(1, self.screenWidth + 1):
@@ -26,6 +28,12 @@ class Paddle():
                 self.screen.pixels[self.screenHeight][i] = ' '
     
     def move(self, input):
+
+        if self.isGrabbing == True:
+            if self.grabTime + 10 < self.screen.time:
+                self.grabTime = 0
+                self.isGrabbing = False
+
         if self.isExpanded == True:
             if self.expandedTime + 100 < self.screen.time:
                 self.expandedTime = 0
@@ -53,6 +61,11 @@ class Paddle():
         self.isShrunk = True
         self.size = int(self.size * 0.66)
         self.shrunkTime = self.screen.time
+        self.move('c')
+    
+    def grab(self):
+        self.isGrabbing = True
+        self.grabTime = self.screen.time
         self.move('c')
 
     

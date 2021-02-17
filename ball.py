@@ -71,8 +71,16 @@ class Ball():
             if self.x < 1 or self.x > self.screen.maxWidth + 1 and self.y < self.screen.maxHeight:
                 self.x = self.prevX
                 self.xVel *= -1
+            # colliding with the paddle
             elif self.y >= self.screen.maxHeight:
                 if self.paddle.paddleX <= self.x and self.paddle.paddleX + self.paddle.size > self.x:
+                    # if there is a paddle grab power up in action
+                    if self.paddle.isGrabbing == True:
+                        self.launched = False
+                        self.x = self.paddle.paddleX + (self.paddle.size) / 2
+                        self.y = self.screen.maxHeight - 1
+                        self.place()
+                        return
                     self.y = self.prevY
                     self.xVel += (self.paddle.paddleX + int(self.paddle.size/2)) - self.x
                     # self.xVel *= -1

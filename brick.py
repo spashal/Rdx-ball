@@ -1,5 +1,5 @@
 import os
-from powerup import powerUps, ExpandPU, ShrinkPU, FastPU
+from powerup import powerUps, ExpandPU, ShrinkPU, FastPU, GrabPU
 
 class Brick():
     def __init__(self, size, screen, strength, paddle, ball):
@@ -34,7 +34,7 @@ class RedB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.removeSelf()
-        self.giftE = FastPU(self.screen, self.paddle, self.x+1, self.y, self.ball)
+        self.giftE = GrabPU(self.screen, self.paddle, self.x+1, self.y, self.ball)
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)
 
