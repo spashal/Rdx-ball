@@ -30,7 +30,7 @@ class Paddle():
     def move(self, input):
 
         if self.isGrabbing == True:
-            if self.grabTime + 10 < self.screen.time:
+            if self.grabTime + self.screen.powerUpTime < self.screen.time:
                 self.grabTime = 0
                 self.isGrabbing = False
 
@@ -40,7 +40,7 @@ class Paddle():
                 self.size = self.originalSize
                 self.isExpanded = False
         
-        if self.isShrunk == True and self.shrunkTime + 100 < self.screen.time:
+        if self.isShrunk == True and self.shrunkTime + self.screen.powerUpTime < self.screen.time:
             self.shrunkTime = 0
             self.size = self.originalSize
             self.isShrunk = False
@@ -67,8 +67,3 @@ class Paddle():
         self.isGrabbing = True
         self.grabTime = self.screen.time
         self.move('c')
-
-    
-    # below function shall place the paddle into the appropriate string in pixels
-        
-        

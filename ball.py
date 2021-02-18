@@ -7,6 +7,7 @@ class Ball():
         self.waitTime = 0.05
         self.gameOver = False
         self.paddle = paddle
+        self.screen.balls += 1
         self.y = self.screen.maxHeight - 1
         self.x = (self.screen.maxWidth + 1) / 2
         self.xVel = 0   
@@ -55,7 +56,7 @@ class Ball():
     def move(self):
         if self.alive == False:
             return
-        if self.isFast == True and self.fastTime + 10 < self.screen.time:
+        if self.isFast == True and self.fastTime + self.screen.powerUpTime < self.screen.time:
             self.isFast = False
             self.xVel = self.originalVelX
             self.yVel = self.originalVelY
@@ -104,10 +105,9 @@ class Ball():
         self.screen.pixels[int(self.y)][int(self.x)] = '@'
 
     def launch(self):
-        self.screen.balls += 1
         self.launched = True
-        self.xVel = random.randint(-5, 5)
-        self.yVel = -4
+        self.xVel = random.randint(-10, 10)
+        self.yVel = -10
         self.originalVelX = self.xVel
         self.originalVelY = self.yVel
 
@@ -119,13 +119,12 @@ class Ball():
         self.move()
 
     def tempBall(self, x, y):
-        self.screen.balls += 1
         self.launched = True
         self.x = x
         self.y = y
-        self.x = 1
-        self.y = 1
-        while self.x * self.y != 0:
-            self.xVel = random.randint(-3, 3)
-            self.yVel = random.randint(-3, 3)
+        self.xVel = 0
+        self.yVel = 0
+        while self.xVel * self.yVel == 0:
+            self.xVel = random.randint(-10, 10)
+            self.yVel = random.randint(-10, 10)
         self.move()

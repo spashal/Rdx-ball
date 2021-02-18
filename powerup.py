@@ -1,4 +1,4 @@
-import random
+import random, sys
 from ball import Ball
 
 class powerUps():
@@ -9,7 +9,7 @@ class powerUps():
         self.y = parentY
         self.prevX = self.x
         self.prevY = self.y
-        self.prevPixel = ' '
+        self.prevPixel = self.screen.pixels[parentY][parentX]
         self.paddle = paddle
         self.vel = random.randint(3, 5)
         self.life = True
@@ -21,9 +21,9 @@ class ExpandPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        self.prevPixel = self.screen.pixels[y][x]
+        if int(self.y) != int(self.prevY):
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'E'
-        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
     
     def collide(self):
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
@@ -44,8 +44,11 @@ class ExpandPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        self.prevY = self.y
+        if int(self.prevY) + 1 == int(self.y):
+            self.prevY = int(self.y)
         self.y += self.screen.interval * self.vel
+        if int(self.y) != int(self.prevY):
+            self.prevPixel = self.screen.pixels[int(self.y)][int(self.x)]
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -57,9 +60,9 @@ class ShrinkPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        self.prevPixel = self.screen.pixels[y][x]
+        if self.y != self.prevY:
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'S'
-        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
     
     def collide(self):
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
@@ -81,8 +84,11 @@ class ShrinkPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        self.prevY = self.y
+        if int(self.prevY) + 1 == int(self.y):
+            self.prevY = int(self.y)
         self.y += self.screen.interval * self.vel
+        if int(self.y) != int(self.prevY):
+            self.prevPixel = self.screen.pixels[int(self.y)][int(self.x)]
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -96,9 +102,9 @@ class FastPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        self.prevPixel = self.screen.pixels[y][x]
+        if int(self.y) != int(self.prevY):
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'F'
-        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
     
     def collide(self):
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
@@ -120,8 +126,11 @@ class FastPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        self.prevY = self.y
+        if int(self.prevY) + 1 == int(self.y):
+            self.prevY = int(self.y)
         self.y += self.screen.interval * self.vel
+        if int(self.y) != int(self.prevY):
+            self.prevPixel = self.screen.pixels[int(self.y)][int(self.x)]
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -134,9 +143,9 @@ class GrabPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        self.prevPixel = self.screen.pixels[y][x]
+        if int(self.y) != int(self.prevY):
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'G'
-        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
     
     def collide(self):
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
@@ -158,8 +167,11 @@ class GrabPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        self.prevY = self.y
+        if int(self.prevY) + 1 == int(self.y):
+            self.prevY = int(self.y)
         self.y += self.screen.interval * self.vel
+        if int(self.y) != int(self.prevY):
+            self.prevPixel = self.screen.pixels[int(self.y)][int(self.x)]
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -172,14 +184,16 @@ class MultiplierPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        self.prevPixel = self.screen.pixels[y][x]
+        if int(self.y) != int(self.prevY):
+            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'M'
-        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
     
     def collide(self):
+        
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
             #do something to inform the paddle
             self.life = False
+
             n = random.randint(2, 4)
             for i in range(n):
                 temp = Ball(self.screen, self.paddle, True)
@@ -196,8 +210,19 @@ class MultiplierPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        self.prevY = self.y
+        if int(self.prevY) + 1 == int(self.y):
+            self.prevY = int(self.y)
         self.y += self.screen.interval * self.vel
+        if int(self.y) != int(self.prevY):
+            self.prevPixel = self.screen.pixels[int(self.y)][int(self.x)]
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
+
+class DummyPU(powerUps):
+    def __init__(self, screen, paddle, parentX, parentY, ball):
+        super().__init__(screen, paddle, parentX, parentY)
+        self.ball = ball
+    
+    def move(self):
+        pass

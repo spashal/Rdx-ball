@@ -1,5 +1,5 @@
-import os
-from powerup import powerUps, ExpandPU, ShrinkPU, FastPU, GrabPU, MultiplierPU
+import os, random, sys
+from powerup import powerUps, ExpandPU, ShrinkPU, FastPU, GrabPU, MultiplierPU, DummyPU
 
 class Brick():
     def __init__(self, size, screen, strength, paddle, ball):
@@ -9,6 +9,23 @@ class Brick():
         self.strength = strength
         self.ball = ball
         self.ar = [-1, 0, 1]
+        self.x = 0
+        self.y = 0
+    
+    def assignPowerUps(self):
+        num = random.randint(0, 4)
+        temp = DummyPU(self.screen, self.paddle, self.x, self.y, self.ball)
+        if num == 0:
+            temp = ExpandPU(self.screen, self.paddle, self.x + 1, self.y)
+        elif num == 1:
+            temp = ShrinkPU(self.screen, self.paddle, self.x + 1, self.y)
+        elif num == 2:
+            temp = FastPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
+        elif num == 3:
+            temp = GrabPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
+        elif num == 4:
+            temp = MultiplierPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
+        return temp
 
 class  TransparentB(Brick):
     def __init__(self):
@@ -35,7 +52,7 @@ class RedB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.removeSelf()
-        self.giftE = MultiplierPU(self.screen, self.paddle, self.x+1, self.y, self.ball)
+        self.giftE = self.assignPowerUps()
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)
 
@@ -55,6 +72,9 @@ class GreenB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
+        self.giftE = self.assignPowerUps()
+        self.giftE.move()
+        self.screen.powerUps.append(self.giftE)
 
 class BlueB(Brick):
     def __init__(self, size, screen, paddle, ball):
@@ -72,6 +92,9 @@ class BlueB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
+        self.giftE = self.assignPowerUps()
+        self.giftE.move()
+        self.screen.powerUps.append(self.giftE)        
 
 class UnbreakableB(Brick):
     def __init__(self, size, screen, paddle, ball):
@@ -101,9 +124,12 @@ class BomberB(Brick):
         for k in range(self.size):
            for i in range(3):
                 for j in range(3):
-                    if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
+                    if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxWidth and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
                         if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength != 4:
                             self.screen.score += self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength
+                            if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength == 5:
+                                self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength = 0
+                                self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].weaken() 
                             self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength = 0
         
     def weaken(self):
@@ -123,9 +149,9 @@ class ChainReactionB(Brick):
     def blast(self):
         self.strength = 0
         for k in range(self.size):
-           for i in range(3):
+            for i in range(3):
                 for j in range(3):
-                    if self.x + k + self.ar[i] > 0 and self.x + k + self.ar[i] < self.screen.maxHeight and self.y + self.ar[j] > 0 and self.ar[j] + self.y < self.screen.maxHeight:
+                    if (self.x + k + self.ar[i]) > 0 and (self.x + k + self.ar[i]) < self.screen.maxWidth and (self.y + self.ar[j]) > 0 and (self.ar[j] + self.y) < self.screen.maxHeight:
                         if self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength == 6:
                             self.screen.score += self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].strength
                             self.screen.bricks[self.y + self.ar[j]][self.x + self.ar[i] + k].blast()
