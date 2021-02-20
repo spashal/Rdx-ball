@@ -198,6 +198,7 @@ class MultiplierPU(powerUps):
             for i in range(n):
                 temp = Ball(self.screen, self.paddle, True)
                 temp.tempBall(self.ball.x, self.ball.y)
+                self.ball.daughters.append(temp)
                 self.screen.powerUps.append(temp)
             self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
             return True

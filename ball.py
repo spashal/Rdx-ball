@@ -20,6 +20,8 @@ class Ball():
         self.thru = False
         self.thruTime = 0.00
         self.isColliding = False
+        self.real = False
+        self.daughters = []
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
@@ -110,6 +112,7 @@ class Ball():
 
     def launch(self):
         self.launched = True
+        self.real = True
         self.xVel = random.randint(-10, 10)
         self.yVel = -10
         self.originalVelX = self.xVel
@@ -120,6 +123,8 @@ class Ball():
         self.xVel *= 1.5
         self.yVel *= 1.5
         self.fastTime = self.screen.time
+        for i in range(len(self.daughters)):
+            self.daughters[i].fast()
         self.move()
 
     def tempBall(self, x, y):
@@ -136,3 +141,5 @@ class Ball():
     def thruBall(self):
         self.thru = True
         self.thruTime = self.screen.time
+        for i in range(len(self.daughters)):
+            self.daughters[i].thruBall()
