@@ -1,5 +1,5 @@
 import os, random, sys
-from powerup import powerUps, ExpandPU, ShrinkPU, FastPU, GrabPU, MultiplierPU, DummyPU
+from powerup import powerUps, ExpandPU, ShrinkPU, FastPU, GrabPU, MultiplierPU, DummyPU, ThruBallPU
 
 class Brick():
     def __init__(self, size, screen, strength, paddle, ball):
@@ -13,7 +13,7 @@ class Brick():
         self.y = 0
     
     def assignPowerUps(self):
-        num = random.randint(0, 4)
+        num = random.randint(0, 5)
         temp = DummyPU(self.screen, self.paddle, self.x, self.y, self.ball)
         if num == 0:
             temp = ExpandPU(self.screen, self.paddle, self.x + 1, self.y)
@@ -25,6 +25,8 @@ class Brick():
             temp = GrabPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
         elif num == 4:
             temp = MultiplierPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
+        elif num == 5:
+            temp = ThruBallPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)
         return temp
 
 class  TransparentB(Brick):

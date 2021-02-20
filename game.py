@@ -8,6 +8,7 @@ from l1 import Level1, Evals
 
 keyboard = KBHit()
 lives = 5
+score = 0
 while lives > 0:
 	level = Evals()
 	level.placeBricks()
@@ -29,8 +30,10 @@ while lives > 0:
 			break
 		os.system("clear")
 		level.screen.display()
+		print("Score:", level.screen.score + score, "  ", "Time elapsed:", int(level.screen.time))
 		print("Lives left:", lives - 1)
 	lives -= 1
+	score += level.screen.score
 
 print("Game over!")
 

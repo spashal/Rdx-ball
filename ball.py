@@ -17,43 +17,41 @@ class Ball():
         self.launched = False
         self.isFast = False
         self.alive = True
+        self.thru = False
+        self.thruTime = 0.00
+        self.isColliding = False
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
-            # temp = self.y
-            # self.y = self.prevY
-            # self.prevY = temp
-            self.yVel *= -1
+            if self.thru != True:
+                self.yVel *= -1
             return True
         elif self.y < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
-            # temp = self.y
-            # self.y = self.prevY
-            # self.prevY = temp
-            self.yVel *= -1
+            if self.thru != True:
+                self.yVel *= -1
             return True
         elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x + 1)].strength
             self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
-            # temp = self.x
-            # self.x = self.prevX
-            # self.prevX = temp
-            self.xVel *= -1
+            if self.thru != True:
+                self.xVel *= -1
             return True
         elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x-1)].strength
             self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
-            # temp = self.x
-            # self.x = self.prevX
-            # self.prevX = temp
-            self.xVel *= -1
+            if self.thru != True:
+                self.xVel *= -1
             return True
         return False    
 
     def move(self):
+        if self.thru == True and self.thruTime + 10 < self.screen.time:
+            self.thru = False
+            self.thruTime = 0
         if self.alive == False:
             return
         if self.isFast == True and self.fastTime + self.screen.powerUpTime < self.screen.time:
@@ -61,7 +59,13 @@ class Ball():
             self.xVel = self.originalVelX
             self.yVel = self.originalVelY
 
-        if self.brickollision() == True:
+        if self.thru == True and self.isColliding == False:
+            if self.brickollision() == True:
+                self.isColliding = True
+        elif self.thru == True and self.isColliding == True:
+            if self.brickollision() == False:
+                self.isColliding = False
+        elif self.thru == False and self.brickollision() == True:
             self.place()
             return
         self.prevX = self.x
@@ -128,3 +132,7 @@ class Ball():
             self.xVel = random.randint(-10, 10)
             self.yVel = random.randint(-10, 10)
         self.move()
+    
+    def thruBall(self):
+        self.thru = True
+        self.thruTime = self.screen.time

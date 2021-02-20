@@ -57,7 +57,7 @@ class Screen():
                     print(Back.LIGHTYELLOW_EX, " ", end='')
                 elif self.pixels[i][j] == "@":
                     print(Back.RESET, "@", end='')
-                elif self.pixels[i][j] == 'E' or self.pixels[i][j] == 'S' or self.pixels[i][j] == 'F' or self.pixels[i][j] == 'M' or self.pixels[i][j] == 'G':
+                elif self.pixels[i][j] == 'T' or self.pixels[i][j] == 'E' or self.pixels[i][j] == 'S' or self.pixels[i][j] == 'F' or self.pixels[i][j] == 'M' or self.pixels[i][j] == 'G':
                     print(Back.LIGHTBLUE_EX, self.pixels[i][j], end = '')
                 elif self.bricks[i][j].strength == 0:
                     print(Back.RESET, ' ', end='')
@@ -75,5 +75,4 @@ class Screen():
                     print(Back.RED, ' ', end = '')    
                 
             print(Back.RESET)
-        print("Score:", self.score, "  ", "Time elapsed:", int(self.time))
     
