@@ -22,6 +22,8 @@ class Ball():
         self.isColliding = False
         self.real = False
         self.daughters = []
+        self.bricksFallAfter = 2
+        self.lastTimeBricksFell = 0
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
@@ -90,6 +92,9 @@ class Ball():
                         self.y = self.screen.maxHeight - 1
                         self.place()
                         return
+                    if self.bricksFallAfter + self.lastTimeBricksFell <= self.screen.time:
+                        self.fallingBricks()
+                        self.lastTimeBricksFell = self.screen.time
                     self.y = self.prevY
                     self.xVel += (self.paddle.paddleX + int(self.paddle.size/2)) - self.x
                     self.yVel *= -1
@@ -143,3 +148,44 @@ class Ball():
         self.thruTime = self.screen.time
         for i in range(len(self.daughters)):
             self.daughters[i].thruBall()
+
+    def fallingBricks(self):
+        # for i in range(self.screen.maxHeight + 2):
+        #     print(i, end=' ')
+        #     for j in range(self.screen.maxWidth + 2):
+        #         print(self.screen.pixels[i][j], end = '')
+        #     print(' ')
+        
+        for j in range(self.screen.maxWidth + 1):
+            if self.screen.bricks[self.screen.maxHeight - 1][j].strength > 0:
+                print("Game Over!!! :/")
+                sys.exit()
+
+        for i in range(self.screen.maxHeight - 2, -1, -1):
+            still_brick = -1
+            for j in range(self.screen.maxWidth + 1):
+                self.screen.bricks[i + 1][j] = self.screen.bricks[i][j]
+                if self.screen.bricks[i][j].strength > 0 :
+                    if still_brick > j:
+                        continue
+                    else:
+                        still_brick = self.screen.bricks[i][j].x + self.screen.bricks[i][j].size
+                        self.screen.bricks[i][j].place(j, i + 1)
+                        for k in range(3):
+                            self.screen.pixels[i][j + k] = ' '
+            
+        # for j in range(self.screen.maxWidth + 1):
+        #     self.screen.bricks[0][j] = TransparentB()
+        
+        for i in self.screen.powerUps:
+            if i.y == i.prevY and i.life :
+                i.y += 1
+                i.prevY += 1
+
+        # for i in range(self.screen.maxHeight + 2):
+        #     print(i, end=' ')
+        #     for j in range(self.screen.maxWidth + 2):
+        #         print(self.screen.pixels[i][j], end = '')
+        #     print(' ')
+
+                    

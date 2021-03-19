@@ -160,3 +160,5 @@ class ChainReactionB(Brick):
     
     def weaken(self):
         self.blast()
+
+    
