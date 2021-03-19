@@ -15,21 +15,20 @@ class powerUps():
         self.xVel = random.randint(3, 5)
         self.life = True
         self.prevPixel2 = ' '
-        self.intermediatePixel = ' '
     
     def setVel(self):
         self.xVel = self.ball.prevXVel
         self.yVel = self.ball.prevYVel
 
 class ExpandPU(powerUps):
-    def __init__(self, screen, paddle, parentX, parentY):
+    def __init__(self, screen, paddle, parentX, parentY, ball):
         super().__init__(screen, paddle, parentX, parentY)
+        self.ball = ball
     
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'E'
     
     def collide(self):
@@ -51,25 +50,32 @@ class ExpandPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
 
 class ShrinkPU(powerUps):
-    def __init__(self, screen, paddle, parentX, parentY):
+    def __init__(self, screen, paddle, parentX, parentY, ball):
         super().__init__(screen, paddle, parentX, parentY)
+        self.ball = ball
     
     def place(self, x, y):
         if self.life == False:
             return
-        if self.y != self.prevY:
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'S'
     
     def collide(self):
@@ -92,12 +98,19 @@ class ShrinkPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -111,8 +124,7 @@ class FastPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'F'
     
     def collide(self):
@@ -135,13 +147,19 @@ class FastPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
-            self.prevPixel = self.intermediatePixel
-            self.intermediatePixel = self.prevPixel2
-            self.prevPixel = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
+            self.prevPixel = self.prevPixel2
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -154,8 +172,7 @@ class GrabPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'G'
     
     def collide(self):
@@ -178,12 +195,19 @@ class GrabPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -196,8 +220,7 @@ class MultiplierPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'M'
     
     def collide(self):
@@ -223,12 +246,19 @@ class MultiplierPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -249,8 +279,7 @@ class ThruBallPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'T'
     
     def collide(self):
@@ -273,12 +302,20 @@ class ThruBallPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+        self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-            self.prevX = int(self.x)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
@@ -291,8 +328,7 @@ class FireBallPU(powerUps):
     def place(self, x, y):
         if self.life == False:
             return
-        if int(self.y) != int(self.prevY):
-            self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
+        self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'B'
     
     def collide(self):
@@ -312,21 +348,15 @@ class FireBallPU(powerUps):
         if self.life == False:
             return
         self.yVel += 10 * self.screen.interval
+        tempx = self.x
+        tempy = self.y
         self.y += self.screen.interval * self.yVel
         self.x += self.screen.interval * self.xVel
-        if abs(int(self.y) - int(self.prevY)) == 2 or abs(int(self.x) - int(self.prevX)) == 2:
+        if int(self.x) != int(tempx) or int(self.y) != int(tempy):
+            self.prevX = int(tempx)
+            self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
-        if abs(int(self.y) - self.prevY) == 2:
-            if self.yVel > 0:
-                self.prevY += 1
-            else:
-                self.prevY -= 1
-        if abs(int(self.x) - self.prevX) == 2:
-            if self.xVel > 0:
-                self.prevX += 1
-            else:
-                self.prevX -= 1
  
         if self.x >= self.screen.maxWidth or self.x <= 0:
             self.xVel *= -1
