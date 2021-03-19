@@ -31,24 +31,32 @@ class Ball():
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
             if self.thru != True:
                 self.yVel *= -1
+            else:
+                os.system('afplay brickbreak.mp3 &')
             return True
         elif self.y < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
             if self.thru != True:
                 self.yVel *= -1
+            else:
+                os.system('afplay brickbreak.mp3 &')
             return True
         elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x + 1)].strength
             self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
             if self.thru != True:
                 self.xVel *= -1
+            else:
+                os.system('afplay brickbreak.mp3 &')
             return True
         elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x-1)].strength
             self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
             if self.thru != True:
                 self.xVel *= -1
+            else:
+                os.system('afplay brickbreak.mp3 &')
             return True
         return False    
 
@@ -82,6 +90,7 @@ class Ball():
             if self.x < 1 or self.x > self.screen.maxWidth + 1 and self.y < self.screen.maxHeight:
                 self.x = self.prevX
                 self.xVel *= -1
+                os.system('afplay bounce.mp3 &')
             # colliding with the paddle
             elif self.y >= self.screen.maxHeight:
                 if self.paddle.paddleX <= self.x and self.paddle.paddleX + self.paddle.size > self.x:
@@ -91,6 +100,7 @@ class Ball():
                         self.x = self.paddle.paddleX + (self.paddle.size) / 2
                         self.y = self.screen.maxHeight - 1
                         self.place()
+                        os.system('afplay bounce.mp3 &')
                         return
                     if self.bricksFallAfter + self.lastTimeBricksFell <= self.screen.time:
                         self.fallingBricks()
@@ -98,6 +108,7 @@ class Ball():
                     self.y = self.prevY
                     self.xVel += (self.paddle.paddleX + int(self.paddle.size/2)) - self.x
                     self.yVel *= -1
+                    os.system('afplay bounce.mp3 &')
                 elif self.y >= (self.screen.maxHeight + 1):
                     if self.screen.balls > 1:
                         self.alive = False
@@ -109,6 +120,7 @@ class Ball():
             elif self.y < 1:
                 self.y = self.prevY
                 self.yVel *= -1
+                os.system('afplay bounce.mp3 &')
         self.place()
     
     def place(self):

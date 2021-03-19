@@ -136,6 +136,7 @@ class BomberB(Brick):
         
     def weaken(self):
         self.blast()
+        os.system('afplay explosion.mp3 &')
 
 class ChainReactionB(Brick):
     def __init__(self, size, screen, paddle, ball):
@@ -160,5 +161,6 @@ class ChainReactionB(Brick):
     
     def weaken(self):
         self.blast()
+        os.system('afplay explosion.mp3 &')
 
     
