@@ -28,6 +28,8 @@ class Ball():
         self.isFireball = False
         self.brickSize = 3
         self.worthReflecting = False
+        self.prevXVel = 0
+        self.prevYVel = 0
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
@@ -127,7 +129,8 @@ class Ball():
             self.isFast = False
             self.xVel = self.originalVelX
             self.yVel = self.originalVelY
-
+        self.prevXVel = self.xVel
+        self.prevYVel = self.yVel
         if self.thru == True and self.isColliding == False:
             if self.brickollision() == True:
                 self.isColliding = True

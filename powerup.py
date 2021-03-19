@@ -11,9 +11,15 @@ class powerUps():
         self.prevY = self.y
         self.prevPixel = self.screen.pixels[parentY][parentX]
         self.paddle = paddle
-        self.vel = random.randint(3, 5)
+        self.yVel = random.randint(3, 5)
+        self.xVel = random.randint(3, 5)
         self.life = True
         self.prevPixel2 = ' '
+        self.intermediatePixel = ' '
+    
+    def setVel(self):
+        self.xVel = self.ball.prevXVel
+        self.yVel = self.ball.prevYVel
 
 class ExpandPU(powerUps):
     def __init__(self, screen, paddle, parentX, parentY):
@@ -45,10 +51,11 @@ class ExpandPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -85,10 +92,11 @@ class ShrinkPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -127,10 +135,12 @@ class FastPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
-            self.prevPixel = self.prevPixel2
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
+            self.prevPixel = self.intermediatePixel
+            self.intermediatePixel = self.prevPixel2
             self.prevPixel = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -168,10 +178,11 @@ class GrabPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -212,10 +223,11 @@ class MultiplierPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -261,10 +273,11 @@ class ThruBallPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        if abs(int(self.prevY) - int(self.y)) or abs(int(self.x) - int(self.prevX)):
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
             self.prevY = int(self.y)
+            self.prevX = int(self.x)
         self.y += self.screen.interval * self.vel
         if self.collide() == True:
             return
@@ -298,11 +311,25 @@ class FireBallPU(powerUps):
     def move(self):
         if self.life == False:
             return
-        if int(self.prevY) + 1 == int(self.y):
+        self.yVel += 10 * self.screen.interval
+        self.y += self.screen.interval * self.yVel
+        self.x += self.screen.interval * self.xVel
+        if abs(int(self.y) - int(self.prevY)) == 2 or abs(int(self.x) - int(self.prevX)) == 2:
             self.prevPixel = self.prevPixel2
-            self.prevPixel2 = self.screen.pixels[int(self.y) + 1][int(self.x)]
-            self.prevY = int(self.y)
-        self.y += self.screen.interval * self.vel
+            self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
+        if abs(int(self.y) - self.prevY) == 2:
+            if self.yVel > 0:
+                self.prevY += 1
+            else:
+                self.prevY -= 1
+        if abs(int(self.x) - self.prevX) == 2:
+            if self.xVel > 0:
+                self.prevX += 1
+            else:
+                self.prevX -= 1
+ 
+        if self.x >= self.screen.maxWidth or self.x <= 0:
+            self.xVel *= -1
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))

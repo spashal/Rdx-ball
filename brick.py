@@ -62,6 +62,7 @@ class RedB(Brick):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.removeSelf()
         self.giftE = self.assignPowerUps()
+        self.giftE.setVel()
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)
     
@@ -94,6 +95,7 @@ class GreenB(Brick):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
         self.giftE = self.assignPowerUps()
+        self.giftE.setVel()
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)
 
@@ -126,6 +128,7 @@ class BlueB(Brick):
             self.screen.bricks[self.y][self.x + i] = self.son
         self.son.place(self.x, self.y)
         self.giftE = self.assignPowerUps()
+        self.giftE.setVel()
         self.giftE.move()
         self.screen.powerUps.append(self.giftE)      
 

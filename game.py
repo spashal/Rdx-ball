@@ -4,7 +4,7 @@ from kbhit import KBHit
 from brick import Brick, RedB, GreenB, TransparentB, BlueB, UnbreakableB
 import os, numpy, sys, time
 from l1 import Level1, Evals
-os.system('afplay ' + 'barbie.mp3 &')
+# os.system('afplay ' + 'barbie.mp3 &')
 
 
 keyboard = KBHit()
