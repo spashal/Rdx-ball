@@ -1,0 +1,1 @@
+* There is a brick size attribute inside ball class that is set manually. Take care of it when you change the bricksize in the levels.

@@ -24,41 +24,94 @@ class Ball():
         self.daughters = []
         self.bricksFallAfter = 2
         self.lastTimeBricksFell = 0
+        self.fireballTime = 0
+        self.isFireball = False
+        self.brickSize = 3
+        self.worthReflecting = False
     
     def brickollision(self):
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
+            if self.isFireball:
+                self.screen.bricks[int(self.y - 1)][int(self.x)].destroyed()  
             if self.thru != True:
                 self.yVel *= -1
             else:
                 os.system('afplay brickbreak.mp3 &')
-            return True
+            self.worthReflecting = True
+        elif self.isFireball and self.yVel < 0 and self.x - self.brickSize >= 0 and self.screen.bricks[int(self.y - 1)][int(self.x - self.brickSize)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x - self.brickSize)].strength
+            self.screen.bricks[int(self.y - 1)][int(self.x - self.brickSize)].destroyed()
+            os.system('afplay explosion.mp3 &')
+
+        elif self.isFireball and self.yVel < 0 and self.x + self.brickSize <= self.screen.maxWidth and self.screen.bricks[int(self.y - 1)][int(self.x + self.brickSize)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x + self.brickSize)].strength
+            self.screen.bricks[int(self.y - 1)][int(self.x + self.brickSize)].destroyed()
+            os.system('afplay explosion.mp3 &')
+
         elif self.y < self.screen.maxHeight and self.yVel > 0 and self.screen.bricks[int(self.y + 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x)].strength
             self.screen.bricks[int(self.y + 1)][int(self.x)].weaken()
+            if self.isFireball:
+                self.screen.bricks[int(self.y + 1)][int(self.x)].destroyed()
             if self.thru != True:
                 self.yVel *= -1
             else:
                 os.system('afplay brickbreak.mp3 &')
-            return True
+            self.worthReflecting = True
+        elif self.isFireball and self.yVel > 0 and self.x - self.brickSize >= 0 and self.screen.bricks[int(self.y + 1)][int(self.x - self.brickSize)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x - self.brickSize)].strength
+            self.screen.bricks[int(self.y + 1)][int(self.x - self.brickSize)].destroyed()
+            os.system('afplay explosion.mp3 &')
+        elif self.isFireball and self.yVel < 0 and self.x + self.brickSize <= self.screen.maxWidth and self.screen.bricks[int(self.y + 1)][int(self.x + self.brickSize)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y + 1)][int(self.x + self.brickSize)].strength
+            self.screen.bricks[int(self.y + 1)][int(self.x + self.brickSize)].destroyed()
+            os.system('afplay explosion.mp3 &')
+
         elif self.xVel > 0 and self.screen.bricks[int(self.y)][int(self.x + 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x + 1)].strength
             self.screen.bricks[int(self.y)][int(self.x + 1)].weaken()
+            if self.isFireball:
+                self.screen.bricks[int(self.y)][int(self.x + 1)].destroyed()
             if self.thru != True:
                 self.xVel *= -1
             else:
                 os.system('afplay brickbreak.mp3 &')
-            return True
+            self.worthReflecting = True
+        elif self.isFireball and self.xVel > 0 and self.y - self.brickSize >= 0 and self.screen.bricks[int(self.y - self.brickSize)][int(self.x + 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - self.brickSize)][int(self.x + 1)].strength
+            self.screen.bricks[int(self.y - self.brickSize)][int(self.x + 1)].destroyed()
+            os.system('afplay explosion.mp3 &')
+        elif self.isFireball and self.xVel > 0 and self.y + self.brickSize <= self.screen.maxHeight and self.screen.bricks[int(self.y + self.brickSize)][int(self.x + 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y + self.brickSize)][int(self.x + 1)].strength
+            self.screen.bricks[int(self.y + self.brickSize)][int(self.x + 1)].destroyed()    
+            os.system('afplay explosion.mp3 &')
+
         elif self.xVel < 0 and self.screen.bricks[int(self.y)][int(self.x - 1)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y)][int(self.x-1)].strength
             self.screen.bricks[int(self.y)][int(self.x - 1)].weaken()
+            if self.isFireball:
+                self.screen.bricks[int(self.y)][int(self.x - 1)].destroyed()
             if self.thru != True:
                 self.xVel *= -1
             else:
                 os.system('afplay brickbreak.mp3 &')
+            self.worthReflecting = True
+        elif self.isFireball and self.xVel < 0 and self.y - self.brickSize >= 0 and self.screen.bricks[int(self.y - self.brickSize)][int(self.x - 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y - self.brickSize)][int(self.x - 1)].strength
+            self.screen.bricks[int(self.y - self.brickSize)][int(self.x - 1)].destroyed()
+            os.system('afplay explosion.mp3 &')
+        elif self.isFireball and self.xVel < 0 and self.y + self.brickSize <= self.screen.maxHeight and self.screen.bricks[int(self.y + self.brickSize)][int(self.x - 1)].strength > 0:
+            self.screen.score += self.screen.bricks[int(self.y + self.brickSize)][int(self.x - 1)].strength
+            self.screen.bricks[int(self.y + self.brickSize)][int(self.x - 1)].destroyed()
+            os.system('afplay explosion.mp3 &')
+        else:
+            return False    
+        if self.worthReflecting:
+            self.worthReflecting = False
             return True
-        return False    
+        return False
 
     def move(self):
         if self.thru == True and self.thruTime + 10 < self.screen.time:
@@ -66,6 +119,10 @@ class Ball():
             self.thruTime = 0
         if self.alive == False:
             return
+
+        if self.isFireball and self.fireballTime + 10 < self.screen.time:
+            self.isFireball = False
+
         if self.isFast == True and self.fastTime + self.screen.powerUpTime < self.screen.time:
             self.isFast = False
             self.xVel = self.originalVelX
@@ -78,6 +135,10 @@ class Ball():
             if self.brickollision() == False:
                 self.isColliding = False
         elif self.thru == False and self.brickollision() == True:
+            if self.isFireball == False:
+                os.system('afplay brickbreak.mp3 &')
+            else:
+                os.system('afplay explosion.mp3 &')
             self.place()
             return
         self.prevX = self.x
@@ -126,6 +187,8 @@ class Ball():
     def place(self):
         self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
         self.screen.pixels[int(self.y)][int(self.x)] = '@'
+        if self.isFireball :
+            self.screen.pixels[int(self.y)][int(self.x)] = '^'
 
     def launch(self):
         self.launched = True
@@ -200,4 +263,6 @@ class Ball():
         #         print(self.screen.pixels[i][j], end = '')
         #     print(' ')
 
-                    
+    def fireball(self):
+        self.isFireball = True
+        self.fireballTime = self.screen.time                    
