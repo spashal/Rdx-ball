@@ -24,6 +24,8 @@ while lives > 0:
 				level.paddle.move(inp)
 			elif inp == ' ':
 				level.ball.launch()
+			elif inp == 't':
+				break
 			keyboard.flush()
 		level.ball.move()
 		
@@ -31,8 +33,37 @@ while lives > 0:
 			break
 		os.system("clear")
 		level.screen.display()
+		print("Level 1")
 		print("Score:", level.screen.score + score, "  ", "Time elapsed:", int(level.screen.time))
 		print("Lives left:", lives - 1)
+	score += level.screen.score
+
+	level = Evals()
+	level.placeBricks()
+	while True:
+		level.screen.time += level.ball.waitTime
+		time.sleep(level.ball.waitTime)
+		if keyboard.kbhit():
+			inp = keyboard.getch()
+			if inp == 'q':
+				sys.exit()
+			elif inp == 'a' or inp == 'd':
+				level.paddle.move(inp)
+			elif inp == ' ':
+				level.ball.launch()
+			elif inp == 't':
+				break
+			keyboard.flush()
+		level.ball.move()
+		
+		if level.ball.gameOver == True:
+			break
+		os.system("clear")
+		level.screen.display()
+		print("Level 2")
+		print("Score:", level.screen.score + score, "  ", "Time elapsed:", int(level.screen.time))
+		print("Lives left:", lives - 1)
+
 	lives -= 1
 	score += level.screen.score
 
