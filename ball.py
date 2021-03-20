@@ -30,8 +30,15 @@ class Ball():
         self.worthReflecting = False
         self.prevXVel = 0
         self.prevYVel = 0
+        self.thereIsADemon = False
     
     def brickollision(self):
+        if self.thereIsADemon:
+            if self.yVel < 0 and self.y <= self.demon.sizeY:
+                self.yVel *= -1
+                return True
+            return False
+
         if self.yVel < 0 and self.screen.bricks[int(self.y - 1)][int(self.x)].strength > 0:
             self.screen.score += self.screen.bricks[int(self.y - 1)][int(self.x)].strength
             self.screen.bricks[int(self.y - 1)][int(self.x)].weaken()
@@ -114,6 +121,10 @@ class Ball():
             self.worthReflecting = False
             return True
         return False
+    
+    def demon(self, demon):
+        self.demon = demon
+        self.thereIsADemon = True
 
     def move(self):
         if self.thru == True and self.thruTime + 10 < self.screen.time:

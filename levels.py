@@ -2,6 +2,7 @@ from brick import RedB, BlueB, UnbreakableB, GreenB, BomberB, ChainReactionB, Ra
 from screen import Screen
 from paddle import Paddle
 from ball import Ball
+from demon import Demon
 import sys, os, random
 
 
@@ -315,3 +316,17 @@ class Difficult():
         self.putMark(temp, 13 * 3 + 1, 6)
         temp = BomberB(3, self.screen, self.paddle, self.ball)
         self.putMark(temp, 13 * 3 + 1, 5)
+    
+class FinalLevel():
+    def __init__(self):
+        self.screen = Screen(100, 30)
+        self.paddle = Paddle(15, self.screen)
+        self.ball = Ball(self.screen, self.paddle, False)
+        self.paddle.place(self.paddle.size)
+        self.ball.move()
+    
+    def placeDemon(self):
+        self.demon = Demon(self.screen, self.paddle, self.ball)
+        self.screen.setDemon(self.demon, self.paddle)
+        self.ball.demon(self.demon)
+        self.demon.place()

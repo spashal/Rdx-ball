@@ -16,6 +16,7 @@ class Paddle():
         self.grabTime = 0
         self.isShrunk = False
         self.isGrabbing = False
+        self.life = 100
 
     def place(self, size):
         for i in range(1, self.screenWidth + 1):

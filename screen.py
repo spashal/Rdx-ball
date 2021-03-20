@@ -13,6 +13,7 @@ class Screen():
         self.powerUps = []
         self.balls = 0
         self.powerUpTime = 10
+        self.levelIsDemon = False
         # remember to change this with change in interval in ball.py
         self.interval = 0.05
 
@@ -33,10 +34,28 @@ class Screen():
                 temp = TransparentB()
                 self.bricks[i].append(temp)
         
-        
-
+    def setDemon(self, demon, paddle):
+        self.demon = demon
+        self.paddle = paddle
 
     def display(self):
+        if self.levelIsDemon:
+            self.demon.place()
+            for i in range(self.maxHeight + 2):
+                for j in range(self.maxWidth + 2):
+                    print(self.pixels[i][j], end='')
+                print(' ')
+            print("Demon's Health: ", end='')
+            for i in range(int(self.demon.life / 10)):
+                print(Back.RED, ' ', end='')
+            print(Back.RESET)
+            print("Paddle Health: ", end='')
+            for i in range(int(self.paddle.life / 10)):
+                print(Back.BLUE, ' ', end='')
+            print(Back.RESET)
+            return
+
+
         for i in range(self.maxHeight + 2):
             for j in range(self.maxWidth + 2):
                 if self.bricks[i][j].strength > 0:
