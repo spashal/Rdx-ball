@@ -3,8 +3,8 @@ from paddle import Paddle
 from kbhit import KBHit
 from brick import Brick, RedB, GreenB, TransparentB, BlueB, UnbreakableB
 import os, numpy, sys, time
-from l1 import Level1, Evals, Easy, Difficult
-os.system('afplay ' + 'barbie.mp3 &')
+from levels import Level1, Moderate, Easy, Difficult
+# os.system('afplay ' + 'barbie.mp3 &')
 
 
 keyboard = KBHit()
@@ -41,7 +41,7 @@ while lives > 0:
 	score += level.screen.score
 
 	# level 2
-	level = Evals()
+	level = Moderate()
 	level.placeBricks()
 	while True:
 		level.screen.time += level.ball.waitTime

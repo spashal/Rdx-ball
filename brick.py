@@ -224,3 +224,60 @@ class ChainReactionB(Brick):
         for i in range(self.size):
             self.screen.bricks[self.y][self.x + i] = self.son
     
+
+class RainbowB(Brick):
+    def __init__(self, size, screen, paddle, ball):
+        self.count = random.randint(0, 6) * 10 + 1 
+        super().__init__(size, screen, self.count / 10, paddle, ball)
+        
+    def place(self, x, y):
+        self.x = x
+        self.y = y
+        self.count += 1
+        self.count %= 60
+        for i in range(x, x + self.size):
+            if self.count / 10 == 0:
+                self.screen.pixels[y][i] = '1'
+                self.strength = 1
+            if self.count / 10 == 1:
+                self.screen.pixels[y][i] = '2'
+                self.strength = 2
+            if self.count / 10 == 2:
+                self.screen.pixels[y][i] = '3'
+                self.strength 
+            if self.count / 10 == 3:
+                self.screen.pixels[y][i] = '4'
+                self.strength
+            if self.count / 10 == 4:
+                self.screen.pixels[y][i] = '5'
+                self.strength
+            if self.count / 10 == 5:
+                self.screen.pixels[y][i] = '6'
+                self.strength
+    
+    def removeSelf(self):
+        for i in range(self.x, self.x + self.size):
+            self.screen.pixels[self.y][i] = ' '
+    
+    def weaken(self):
+        self.son = RedB(self.size, self.screen, self.paddle, self.ball)
+        if self.strength == 2:
+            self.son = GreenB(self.size, self.screen, self.paddle, self.ball)
+        if self.strength == 3:
+            self.son = BlueB(self.size, self.screen, self.paddle, self.ball)
+        if self.strength == 4:
+            self.son = UnbreakableB(self.size, self.screen, self.paddle, self.ball)
+        if self.strength == 5:
+            self.son = BomberB(self.size, self.screen, self.paddle, self.ball)
+        if self.strength == 6:
+            self.son = ChainReactionB(self.size, self.screen, self.paddle, self.ball)
+        for i in range(self.size):
+            self.screen.bricks[self.y][self.x + i] = self.son      
+        self.son.place(self.x, self.y)
+
+    def destroyed(self):
+        self.strength = 0
+        self.son = TransparentB()
+        for i in range(self.size):
+            self.screen.bricks[self.y][self.x + i] = self.son
+        self.removeSelf()  

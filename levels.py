@@ -1,4 +1,4 @@
-from brick import RedB, BlueB, UnbreakableB, GreenB, BomberB, ChainReactionB
+from brick import RedB, BlueB, UnbreakableB, GreenB, BomberB, ChainReactionB, RainbowB
 from screen import Screen
 from paddle import Paddle
 from ball import Ball
@@ -27,7 +27,7 @@ class Level1():
             self.screen.bricks[2][i + 7] = self.bb
             self.screen.bricks[3][i + 5] = self.kk
 
-class Evals():
+class Moderate():
     def __init__(self):
         self.screen = Screen(45, 20)
         self.paddle = Paddle(7, self.screen)
@@ -51,12 +51,14 @@ class Evals():
                     temp = UnbreakableB(3, self.screen, self.paddle, self.ball)
                     self.putMark(temp, 34+i*3, 4 + j)
         for i in range(7):
-            n = random.randint(0, 2)
+            n = random.randint(0, 4)
             temp = RedB(3, self.screen, self.paddle, self.ball)
             if n == 1:
                 temp = GreenB(3, self.screen, self.paddle, self.ball)
             elif n == 2:
                 temp = BlueB(3, self.screen, self.paddle, self.ball)
+            elif n == 3:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
             self.putMark(temp, 13 + i*3, 4)
         
         temp = BomberB(3, self.screen, self.paddle, self.ball)
@@ -153,7 +155,7 @@ class Easy():
         # central thing
         for i in range(8, 3, -1):
             j = (11 - i) * 3 + 1
-            n = random.randint(0, 4)
+            n = random.randint(0, 5)
             temp = RedB(3, self.screen, self.paddle, self.ball)
             if n == 1:
                 temp = GreenB(3, self.screen, self.paddle, self.ball)
@@ -161,11 +163,13 @@ class Easy():
                 temp = BlueB(3, self.screen, self.paddle, self.ball)
             elif n == 3:
                 temp = BomberB(3, self.screen, self.paddle, self.ball)
+            elif n == 4:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
             self.putMark(temp, j, i)
         
         for i in range(5, 9):
             j = (i + 3) * 3 + 1
-            n = random.randint(0, 4)
+            n = random.randint(0, 5)
             temp = RedB(3, self.screen, self.paddle, self.ball)
             if n == 1:
                 temp = GreenB(3, self.screen, self.paddle, self.ball)
@@ -173,11 +177,13 @@ class Easy():
                 temp = BlueB(3, self.screen, self.paddle, self.ball)
             elif n == 3:
                 temp = BomberB(3, self.screen, self.paddle, self.ball)
+            elif n == 4:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
             self.putMark(temp, j, i)
         
         for i in range(12, 7, -1):
             j = (19 - i) * 3 + 1
-            n = random.randint(0, 4)
+            n = random.randint(0, 5)
             temp = RedB(3, self.screen, self.paddle, self.ball)
             if n == 1:
                 temp = GreenB(3, self.screen, self.paddle, self.ball)
@@ -185,11 +191,13 @@ class Easy():
                 temp = BlueB(3, self.screen, self.paddle, self.ball)
             elif n == 3:
                 temp = BomberB(3, self.screen, self.paddle, self.ball)
+            elif n == 4:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
             self.putMark(temp, j, i)
         
         for i in range(9, 13):
             j = (i - 5) * 3 + 1
-            n = random.randint(0, 4)
+            n = random.randint(0, 5)
             temp = RedB(3, self.screen, self.paddle, self.ball)
             if n == 1:
                 temp = GreenB(3, self.screen, self.paddle, self.ball)
@@ -197,6 +205,8 @@ class Easy():
                 temp = BlueB(3, self.screen, self.paddle, self.ball)
             elif n == 3:
                 temp = BomberB(3, self.screen, self.paddle, self.ball)
+            elif n == 4:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
             self.putMark(temp, j, i)
         
         temp = ChainReactionB(3, self.screen, self.paddle, self.ball)
@@ -222,7 +232,7 @@ class Difficult():
         self.ball.move()
     
     def randBrick(self):
-        n = random.randint(0, 4)
+        n = random.randint(0, 5)
         temp = RedB(3, self.screen, self.paddle, self.ball)
         if n == 1:
             temp = GreenB(3, self.screen, self.paddle, self.ball)
@@ -230,6 +240,8 @@ class Difficult():
             temp = BlueB(3, self.screen, self.paddle, self.ball)
         elif n == 3:
             temp = BomberB(3, self.screen, self.paddle, self.ball)
+        elif n == 4:
+                temp = RainbowB(3, self.screen, self.paddle, self.ball)
         return temp
 
     def putMark(self, brick, x, y):
