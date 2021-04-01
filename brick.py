@@ -13,7 +13,7 @@ class Brick():
         self.y = 0
     
     def assignPowerUps(self):
-        num = random.randint(0, 6)
+        num = random.randint(6, 6)
         temp = DummyPU(self.screen, self.paddle, self.x, self.y, self.ball)
         if num == 0:
             temp = ExpandPU(self.screen, self.paddle, self.x + 1, self.y, self.ball)

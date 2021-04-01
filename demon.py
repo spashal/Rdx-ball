@@ -1,6 +1,8 @@
 from demonscii import demonDraw
 import sys, random
 
+ 
+
 class Bullet():
     def __init__(self, screen, paddle, ball):
         self.screen = screen
@@ -15,22 +17,31 @@ class Bullet():
         self.prevPixel = ' '
         self.prevPixel2 = ' '
 
+ 
+
     def place(self, x, y):
         if self.life == False:
             return
         self.screen.pixels[int(self.prevY)][int(self.prevX)] = self.prevPixel
         self.screen.pixels[y][x] = 'O'
 
+ 
+
     def collide(self):
         if self.x >= self.paddle.paddleX and self.x < self.paddle.paddleX + self.paddle.size and self.y >= self.screen.maxHeight:
             #do something to inform the paddle
             self.paddle.life -= 2
+            if(self.paddle.life == 0):
+                self.ball.gameOver = True
+                return
             return True
         if self.y > self.screen.maxHeight:
             self.life = False
             self.screen.pixels[int(self.prevY)][int(self.prevX)] = ' '
             return True
         return False
+
+ 
 
     def move(self):
         if self.life == False:
@@ -43,7 +54,7 @@ class Bullet():
             self.prevY = int(tempy)
             self.prevPixel = self.prevPixel2
             self.prevPixel2 = self.screen.pixels[int(self.y)][int(self.x)]
-        if self.y >= self.screen.maxWidth + 1:
+        if self.y >= self.screen.maxHeight + 1:
             self.life = False
             self.screen.pixels[int(self.y)][int(self.x)] = ' '
         # if self.x >= self.screen.maxWidth or self.x <= 0:
@@ -51,6 +62,8 @@ class Bullet():
         if self.collide() == True:
             return
         self.place(int(self.x), int(self.y))
+
+ 
 
 
 class Demon():
@@ -88,4 +101,3 @@ class Demon():
                 self.screen.pixels[i][j] = ' '
             for j in range(x, x + len(a[i - y])):
                 self.screen.pixels[i][j] = a[i - y][j - x]
-    
